@@ -15,7 +15,7 @@
                         <div class="card-img-tiles">
                             <div class="card-body text-center">
                                 <h4 class="card-title">{{ $product->title }}</h4>
-                                <h6 class="card-title">{{ $product->category->title }}</h6>
+                                <h6 class="card-title"> Category: {{ $product->category->title }}</h6>
                                 <p class="text-muted">{{ $product->price }} $ </p>
                                 <form class=" @if (in_array($product->id, $productBusketIDs)) visually-hidden @endif addToBasket"
                                     action="{{ route('product.add', $product->id) }}" method="post">

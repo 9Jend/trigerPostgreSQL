@@ -14,7 +14,7 @@ class StatisticController extends Controller
 
     public function index()
     {
-        $statistic = Statistic::all();
+        $statistic = Statistic::whereDate('created_at', date('Y-m-d'))->get();
         return view('statistic/index', compact('statistic'));
     }
 }
