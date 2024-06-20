@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->integer('product_count');
             $table->string('product_category');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

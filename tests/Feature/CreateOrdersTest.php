@@ -22,30 +22,52 @@ class CreateOrdersTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $category = Category::create([
-            "title" => 'test'
+        $firstCategory = Category::create([
+            "title" => 'first category'
         ]);
 
-        $product = Product::create([
-            "category_id" => $category->id,
-            "title" => 'test',
-            "description" => 'test',
+        $secondCategory = Category::create([
+            "title" => 'second category'
+        ]);
+
+        $firstProduct = Product::create([
+            "category_id" => $firstCategory->id,
+            "title" => 'First product',
+            "description" => 'First desc',
             "price" => 1000,
         ]);
-
-        $countProduct = 1;
+        $secondProduct = Product::create([
+            "category_id" => $secondCategory->id,
+            "title" => 'Second product',
+            "description" => 'Second desc',
+            "price" => 500,
+        ]);
+        $thridProduct = Product::create([
+            "category_id" => $secondCategory->id,
+            "title" => 'Thrid product',
+            "description" => 'Thrid desc',
+            "price" => 300,
+        ]);
 
         $order = Order::create([
             "total_price" => 1000,
             "user_id" => $user->id,
         ]);
 
-        $order->products()->attach(
-            $product->id,
-            ['count'   => $countProduct, 'total_product_price' => $product->price * $countProduct]
-        );
+        foreach ([
+            $firstProduct,
+            $secondProduct,
+            $thridProduct
+        ] as $product) {
+            $countProduct = rand(1, 5);
+            $order->products()->attach(
+                $product->id,
+                ['count'   => $countProduct, 'total_product_price' => $product->price * $countProduct]
+            );
+        }
 
         $this->assertModelExists($order);
-        $this->assertDatabaseCount('order_product', 1);
+        $this->assertDatabaseCount('order_product', 3);
+        $this->assertDatabaseCount('statistics', 3);
     }
 }
