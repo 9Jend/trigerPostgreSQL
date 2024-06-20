@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Busket extends Model
 {
     use HasFactory;
 
-    protected $table = "orders";
+    protected $table = "buskets";
     protected $guarded = [];
 
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot(['count','total_product_price']);
+        return $this->belongsToMany(Product::class)->withPivot('count');
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class)->withPivot('count');
     }
 }
