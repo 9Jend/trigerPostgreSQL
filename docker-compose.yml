@@ -48,11 +48,25 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    pgadmin:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+        ports:
+            - ${PGADMIN_DEFAULT_PASSWORD:-5050}:80
+        volumes:
+            - pgadmin:/var/lib/pgadmin
+        depends_on:
+            - pgsql
+        networks:
+            - sail
+        restart: unless-stopped
 networks:
     sail:
         driver: bridge
 volumes:
-    sail-mysql:
-        driver: local
     sail-pgsql:
         driver: local
+    pgadmin:
