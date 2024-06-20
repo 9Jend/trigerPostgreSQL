@@ -12,34 +12,28 @@ class ProductController extends Controller
 
     public function __construct(ProductService $productService) {
         $this->middleware('auth');
+        $this->middleware('userBusketCount');
         $this->productService = $productService;
     }
 
     public function index()
     {
-        $product = Product::all();
-        return view('index', compact('product'));
+        $products = Product::all();
+        $productBusketIDs = $this->productService->index();
+
+        return view('index', compact('products', 'productBusketIDs'));
     }
 
     public function addToBusket(Product $product)
     {
-        $this->productService->addToBusket($product);
+        $countBasketProduct = $this->productService->addToBusket($product);
+        return response()->json(['success' => 'ok', 'countBasketProduct' => $countBasketProduct]);
     }
 
     public function removeFromBusket(Product $product)
     {
-        $this->productService->removeFromBusket($product);
-    }
-
-    public function changeProductCount(Product $product, Request $request)
-    {
-
-        $this->productService->changeCountBusketProduct($product, $request);
-    }
-
-    public function clearBusket()
-    {
-        $this->productService->clearBusket();
+        [$countBasketProduct, $totalBusketPrice]= $this->productService->removeFromBusket($product);
+        return response()->json(['success' => 'ok', 'countBasketProduct' => $countBasketProduct, 'totalBusketPrice' => $totalBusketPrice]);
     }
 
     public function busketIndex()

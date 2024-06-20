@@ -16,4 +16,9 @@ class Busket extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('count');
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class)->withPivot('count');
+    }
 }

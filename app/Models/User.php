@@ -52,6 +52,6 @@ class User extends Authenticatable
 
     public function busket()
     {
-        return $this->hasOne(Busket::class);
+        return $this->belongsTo(Busket::class);
     }
 }
